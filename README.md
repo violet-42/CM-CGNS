@@ -21,9 +21,9 @@ Learning medical visual representations directly from paired images and reports 
 <img src="assets/cluster.png" />
 </div>
 
-### • Framework
+### • Architecture
 <div align="center">
 <img src="assets/framework.png" />
 </div>
 
-## Once our paper is accepted, we will release the code as soon as possible.
+Once our paper is accepted, we will release the code as soon as possible.
