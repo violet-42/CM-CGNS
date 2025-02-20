@@ -1,1 +1,1 @@
-When our paper is accepted, we will release the code at the earliest possible time.
+Once our paper is accepted, we will release the code as soon as possible.
