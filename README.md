@@ -4,10 +4,10 @@
 
 [Libin Lan](https://orcid.org/0000-0003-4754-813X)<sup>1</sup> ,[Hongxing Li](https://orcid.org/0009-0002-7958-3976)<sup>1</sup> ,[Zunhui Xia](https://orcid.org/0009-0008-6706-5817)<sup>1</sup> ,[Juan Zhou](https://orcid.org/0009-0008-0243-3949)<sup>2</sup> ,[Xiaofei Zhu](https://orcid.org/0000-0001-8239-7176)<sup>1</sup>,[Yongmei Li](https://orcid.org/0000-0003-2829-6416)<sup>3</sup> ,[Yudong Zhang](https://orcid.org/0000-0002-4870-1493)<sup>4</sup>,[Xin Luo](https://orcid.org/0000-0002-1348-5305)<sup>5 :email:</sup>
 
-🏢 <sup>1</sup> College of Computer Science and Engineering, Chongqing University of Technology.
-🏢 <sup>2</sup> Department of Pharmacy, the Second Affiliated Hospital of Army Military Medical University.
-🏢 <sup>3</sup> Department of Radiology, the First Affiliated Hospital of Chongqing Medical University.
-🏢 <sup>4</sup> School of Computer Science and Engineering, Southeast University.
+🏢 <sup>1</sup> College of Computer Science and Engineering, Chongqing University of Technology.  
+🏢 <sup>2</sup> Department of Pharmacy, the Second Affiliated Hospital of Army Military Medical University.  
+🏢 <sup>3</sup> Department of Radiology, the First Affiliated Hospital of Chongqing Medical University.  
+🏢 <sup>4</sup> School of Computer Science and Engineering, Southeast University.  
 🏢 <sup>5</sup> College of Computer and Information Science, Southwest University,  (<sup>:email:</sup>) corresponding author.
 </div>
 
