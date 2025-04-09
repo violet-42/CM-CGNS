@@ -58,18 +58,18 @@ CUDA_VISIBLE_DEVICES=0,1 python cgns_module.py --gpus 2 --strategy ddp
 ### Finetune on downstream tasks
 #### Linear classification
 ```
-CUDA_VISIBLE_DEVICES=1 python mgca_finetuner.py --gpus 1 --dataset chexpert --data_pct 0.01
+CUDA_VISIBLE_DEVICES=1 python cgns_finetuner.py --gpus 1 --dataset chexpert --data_pct 0.01
 ```
 We can use `--dataset` to set specific dataset for finetuning. Here, 3 datsets are available: chexpert, rsna and covidx.
 
 #### Object detection
 ```
-CUDA_VISIBLE_DEVICES=0 python mgca_detector.py --devices 1 --dataset rsna --data_pct 1 --learning_rate 5e-4
+CUDA_VISIBLE_DEVICES=0 python cgns_detector.py --devices 1 --dataset rsna --data_pct 1 --learning_rate 5e-4
 ```
 Here, 2 datsets are available: rsna and object_cxr.
 
 #### Semantic segmentation
 ```
-CUDA_VISIBLE_DEVICES=0 python mgca_segmenter.py --gpus 1 --data_pct 1 --dataset rsna --batch_size 16 --learning_rate 5e-4
+CUDA_VISIBLE_DEVICES=0 python cgns_segmenter.py --gpus 1 --data_pct 1 --dataset rsna --batch_size 16 --learning_rate 5e-4
 ```
 Here, 2 datsets are available: rsna and siim.
