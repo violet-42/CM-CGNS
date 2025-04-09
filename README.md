@@ -26,4 +26,50 @@ Learning medical visual representations directly from paired images and reports 
 <img src="assets/framework.png" />
 </div>
 
-Once our paper is accepted, we will release the code as soon as possible.
+###  Installation
+To install Python dependencies:
+```
+pip install -r requirements.txt
+```
+### Dataset downloading
+Datasets we used are as follows:
+- **MIMIC-CXR**: We downloaded the [MIMIC-CXR-JPG](https://physionet.org/content/mimic-cxr-jpg/2.0.0/) dataset as the radiographs. Paired medical reports can be downloaded in [MIMIC-CXR](https://physionet.org/content/mimic-cxr/2.0.0/mimic-cxr-reports.zip).
+
+- **CheXpert**: We downloaded the [CheXpert](https://stanfordmlgroup.github.io/competitions/chexpert/) dataset which consisting of 224,316 chest radiographs of 65,240 patients.
+
+- **RSNA**: We used the stage 2 of RSNA dataset in [Kaggle](https://www.kaggle.com/competitions/rsna-pneumonia-detection-challenge/data). 
+
+- **COVIDx**: We used the version 6 of COVIDx dataset in [Kaggle](https://www.kaggle.com/datasets/andyczhao/covidx-cxr2).
+
+- **SIIM**: We downloaded the stage 1 of SIIM dataset in [Kaggle](https://www.kaggle.com/competitions/siim-acr-pneumothorax-segmentation/data).
+
+- **Object-CXR**: We downloaded the object-CXR dataset in its [official website](https://academictorrents.com/details/fdc91f11d7010f7259a05403fc9d00079a09f5d5).
+
+After downloading datasets, please check if the path in `cgns/constants.py` is correct.
+
+### Data Preprocessing
+We preprocessed these datasets and split the dataset into train/val/test set using the code in `cgns/preprocess`.
+
+### Pre-training
+```
+CUDA_VISIBLE_DEVICES=0,1 python cgns_module.py --gpus 2 --strategy ddp
+```
+
+### Finetune on downstream tasks
+#### Linear classification
+```
+CUDA_VISIBLE_DEVICES=1 python mgca_finetuner.py --gpus 1 --dataset chexpert --data_pct 0.01
+```
+We can use `--dataset` to set specific dataset for finetuning. Here, 3 datsets are available: chexpert, rsna and covidx.
+
+#### Object detection
+```
+CUDA_VISIBLE_DEVICES=0 python mgca_detector.py --devices 1 --dataset rsna --data_pct 1 --learning_rate 5e-4
+```
+Here, 2 datsets are available: rsna and object_cxr.
+
+#### Semantic segmentation
+```
+CUDA_VISIBLE_DEVICES=0 python mgca_segmenter.py --gpus 1 --data_pct 1 --dataset rsna --batch_size 16 --learning_rate 5e-4
+```
+Here, 2 datsets are available: rsna and siim.
