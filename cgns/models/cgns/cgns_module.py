@@ -288,15 +288,15 @@ class CGNS(LightningModule):
         # # reshape the image features to the [B, C, H, W]
         # image_embed = image_embed.view(-1, image_embed.size(-1), *self.image_encoder.get_last_spatial_info())
         
-        output = self.image_decoder(image_embed, self.text_to_local_image_embed_stacks, image)  # resnet:(bs,49,768) vit: ()
+        output = self.image_decoder(image_embed, self.text_to_local_image_embed_stacks, image) 
         rec_image_loss = output['loss']
         return rec_image_loss
 
     def get_global_text_representation(self, local_text_embed_stacks):
         batch_stacks = []
-        for local_text_embed in local_text_embed_stacks:  # 遍历bs
+        for local_text_embed in local_text_embed_stacks: 
             batch_stacks.append(
-                self.global_text_attention(local_text_embed.unsqueeze(dim=0)))  # 取出每个句子计算全局文本注意力(sen_n,768)(1,768)
+                self.global_text_attention(local_text_embed.unsqueeze(dim=0)))
         return torch.cat(batch_stacks, dim=0)
 
     def sinkhorn(self, Q, nmb_iters):
@@ -352,48 +352,6 @@ class CGNS(LightningModule):
                 curr_sum = torch.sum(Q, dim=1)
                 dist.all_reduce(curr_sum)
             return (Q / torch.sum(Q, dim=0, keepdim=True)).t().float()
-
-    #### Cross-model prototype alignment ####
-    # def cpa(self, global_image_embed, global_text_embed, flag):
-    #     with torch.no_grad():
-    #         w = self.prototype_layer.weight.data.clone()
-    #         w = F.normalize(w, dim=1, p=2)
-    #         self.prototype_layer.weight.copy_(w)
-
-    #     # Compute assign code of images and report
-    #     img_proto_out = self.prototype_layer(global_image_embed)  # [bs,128]->[bs,500]图像和文本嵌入到原型空间
-    #     report_proto_out = self.prototype_layer(global_text_embed)  # img_proto_out和report_proto_out分别代表图像和报告与原型的关联程度
-    #     # ε的主要作用之一是控制除法和指数运算时的数值稳定性。较大的ε值可以减少因除法而导致的数值放大，从而避免exp函数中的输入值过大导致的溢出问题。但是，ε也不能太大，否则会过分抑制原型分配的差异性，影响模型学习能力。
-    #     # TODO: define this to hparams
-    #     with torch.no_grad():  # 使用Sinkhorn算法来获得每种原型与图像或报告样本之间的“分配码”
-    #         img_code = torch.exp(
-    #             img_proto_out / self.epsilon).t().contiguous()  # (bs,500)->[500,bs] 表示每种原型商品与批次中每个顾客需求之间的关联度量
-    #         img_code = self.get_assignments(
-    #             img_code,
-    #             self.sinkhorn_iterations)  # 用sinkhorn算法得到关系度量，可以看作是从样本到原型的一种“运输计划”，表明如何将顾客需求“分配”给不同的原型商品
-    #         report_code = torch.exp(
-    #             report_proto_out / self.epsilon).t().contiguous()
-    #         report_code = self.get_assignments(
-    #             report_code, self.sinkhorn_iterations)  # bz, 500
-
-    #     # 对分配码应用softmax函数，得到概率分布，就是软聚类分配码q
-    #     img_proto_prob = F.softmax(
-    #         img_proto_out / self.proto_temperature, dim=1)
-    #     report_proto_prob = F.softmax(
-    #         report_proto_out / self.proto_temperature, dim=1)
-
-    #     # 计算图像到报告的对比损失，用负对数似然函数
-    #     loss_i2t_proto = - \
-    #         torch.mean(
-    #             torch.sum(img_code * torch.log(report_proto_prob),
-    #                       dim=1))  # 衡量了图像的分配码与报告的原型概率分布之间的匹配程度，表示图像和报告在原型空间中的对应更加一致，即它们的信息内容更加相关。
-    #     loss_t2i_proto = - \
-    #         torch.mean(torch.sum(report_code *
-    #                              torch.log(img_proto_prob), dim=1))
-
-    #     loss_proto = (loss_i2t_proto + loss_t2i_proto) / 2.  # L_CPA
-    #     cap_loss = loss_proto
-    #     return cap_loss
 
     def stage1_step(self, batch, split="train"):
         image = batch['image']  # (bs,3,224,224)
@@ -550,7 +508,6 @@ class CGNS(LightningModule):
         Log the loss
         =================================================================
         '''
-        # 灵活地管理和调整不同组件的损失贡献，特别是通过调整乘数（如全局对齐损失乘以10）来平衡不同损失项对最终优化目标的影响
         if split == 'train':
             loss_dict = {
                 "stage2_local_image_loss": local_image_loss,  # -0.0079
